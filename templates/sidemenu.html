@@ -1,0 +1,16 @@
+<ion-side-menu side="left">
+  <ion-header-bar class="bar-assertive" ui-sref="cdashboard.dashboard" menu-close>
+      <img src="https://www.enteract.io{{image}}" height="38" width="50"/>
+      <h1 class="title">{{name}}</h1>
+  </ion-header-bar>
+  <ion-content>
+    <ion-list>
+      <ion-item ng-if="item.name!=='Setting' || item.name!=='Profile'" item-type="item-icon-left" ng-repeat="item in items" menu-close ng-click="change(item.state)">
+        <i style="margin-right:5px" class="fa {{item.icon}}"></i>{{item.name}}
+      </ion-item>
+      <ion-item item-type="item-icon-left" menu-close ng-click="signout()">
+        <i style="margin-right:5px"  class="fa fa-sign-out"></i>Log Out
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-side-menu>

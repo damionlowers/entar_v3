@@ -1,0 +1,90 @@
+<ion-content scroll="true" class="black has-footer">
+    <div class="list">
+        <div class="item row">
+            <div style="margin: 0 auto; width:30%">
+                <img src="{{image}}">
+                <h3 class="title">{{name}}</h3>
+            </div>
+            
+        </div>
+        <form id="questionForm">
+            <div class="card" data-type="{{question}}" ng-repeat="(key, question)  in questions">
+                <div class="item item-text-wrap">
+                    {{question.text}} <span style="color:red" ng-if="question.required">*</span><br/>
+                    <div ng-switch on="question.type.code_name">
+                        <div ng-switch-when="choice">
+                            <div class="list">
+                                <label class="item item-radio" ng-repeat="choice in question.choices">
+                                    <input type="radio" data-choice="{{choice}}" name="choices_{{choice}}" ng-model="response[key].choice" ng-value="choice" class="data_choice">
+                                    <div class="item-content">
+                                        {{choice.text}}
+                                    </div>
+                                    <i class="radio-icon ion-checkmark"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div ng-switch-when="rank">
+                            <div class="list">
+                                <label class="item item-radio" ng-repeat="choice in question.choices">
+                                    <input type="radio" name="ranks_{{choice}}" data-choice="{{choice}}" ng-model="response[key].rank" ng-value="choice" class="data_rank">
+                                    <div class="item-content">
+                                        {{choice.text}}
+                                    </div>
+                                    <i class="radio-icon ion-checkmark"></i>
+                                </label>
+                            </div>
+                        </div>
+                        <div ng-switch-when="open">
+                            <label class="item item-input">
+                                <input type="text" placeholder="Answer goes here" ng-model="response[key].open" class="data_open">
+                            </label>
+                        </div>
+                        <div ng-switch-when="number">
+                            <label class="item item-input">
+                                <input type="number" placeholder="Answer goes here" ng-model="response[key].number" class="data_number">
+                            </label>
+                        </div>
+                        <div ng-switch-when="time">
+                            <time key="key"></time>
+                        </div>
+                        <div ng-switch-when="open_textfield">
+                            <label class="item item-input">
+                                <textarea placeholder="Answer goes here" ng-model="response[key].open_textfield" class="data_open_textfield"></textarea>
+                            </label>
+                        </div>
+                        <div ng-switch-when="dropdown">
+                            <label class="item item-select">
+                                <select class="data_dropdown" class='en-select'>
+                                    <option selected value=''>--Select--</option>
+                                    <option value='{{choice}}' ng-repeat="choice in question.choices">{{choice.text}}</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div ng-switch-when="choice_multiple">
+                            <ul class="list">
+                                <li class="item item-checkbox" ng-repeat="choice in question.choices" ng-model="response[key].choice_multiple" ng-value="choice">
+                                    <label class="checkbox">
+                                        <input type="checkbox" data-choice="{{choice}}" class="data_choice_multiple">
+                                    </label>
+                                    {{choice.text}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-switch-when="date">
+                            <date key="key"></date>
+                        </div>
+                        <div ng-switch-when="range">
+                        <range min='question.choices[0].text' max='question.choices[1].text' step='question.choices[2].text' key="key"></range>
+                        </div>
+                    </div>
+                    <label ng-if="question.comment" class="item item-input comment">
+                        <span class="input-label">Comment</span>
+                        <input type="text" placeholder="Enter comment here" class="comment_input" ng-model="response[key].comment">
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <button class="button button-block button-calm icon-left" ng-click="validate()">Next<i class="fa fa-paper-plane"> </i></button>
+    <div style="height:32px"></div>
+</ion-content>

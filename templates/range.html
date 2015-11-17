@@ -1,0 +1,13 @@
+<div class="row">
+    <label class="item item-input">
+        <input type="range" ng-model="range" min="{{min}}" max="{{max}}" step="{{step}}" ng-model="range" >
+    </label>
+</div>
+<div class="row">
+    <div class="col">
+        <input type='text' class="data_range" ng-model="range" disabled>
+    </div>
+    <div class="col">
+        <button class="button button-assertive icon ion-close-circled" ng-click="clearRange()"></button>
+    </div>
+</div>

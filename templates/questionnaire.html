@@ -1,0 +1,48 @@
+<ion-toggle ng-model="started" toggle-class="toggle-balanced">
+    <span ng-if="started">Started Questionnaires</span>
+    <span ng-if="!started">Not Started Questionnaires</span>
+</ion-toggle>
+<ion-view>
+    <ion-content scroll="true" class="has-footer">
+        <div ng-if="started">
+            <div class="list">
+                <div class="card" ng-repeat="item in inProgress">
+                    <div class="item item-text-wrap item-calm" ng-click="contQuestionnaire(item)">
+                        <div class="row">
+                            <div class="col">
+                                <span class="fa-stack info-box-icon">
+                                    <i class="fa fa-play fa-4x"></i>
+                                </span>
+                            </div>
+                            <div class="col col-75">
+                                Testing of {{item.name}}<br/>
+                                Questions: {{item.num_of_questions}}<br/>
+                                Sections: {{item.num_of_questionsets}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="!started">
+            <div class="list">
+                <div class="card" ng-repeat="item in notStarted">
+                    <div class="item item-text-wrap item-assertive" ng-click="doQuestionnaire(item)">
+                        <div class="row">
+                            <div class="col">
+                                <span class="fa-stack info-box-icon">
+                                    <i class="fa fa-question fa-4x"></i>
+                                </span>
+                            </div>
+                            <div class="col col-75">
+                                {{item.name}}<br/>
+                                Questions: {{item.num_of_questions}}<br/>
+                                Sections: {{item.num_of_questionsets}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
