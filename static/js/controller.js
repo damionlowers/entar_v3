@@ -1,4 +1,4 @@
-interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading,$document, $localstorage, UserRequest, Sessions, $state) {
+interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading, $document, $localstorage, UserRequest, Sessions, $state) {
 
     $document[0].addEventListener('online', function () {
 
@@ -16,12 +16,12 @@ interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading,$docume
             }, function (data) {
                 console.log(data);
             });
-           
+
             $window.localStorage.removeItem('toUploadQuestion');
         });
 
 
-        console.log("to submit",questionnaireObjs);
+        console.log("to submit", questionnaireObjs);
 
 
     }, false);
@@ -79,10 +79,10 @@ interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading,$docume
         //hard coded please remove 
 
        /* user = {
-            username: "deano24",
-            password: "cookie24"
-                //username: "stanu_yiannamaria",
-                // password: "Test123"
+                        username: "deano24",
+                        password: "cookie24"
+//            username: "stanu_yiannamaria",
+//            password: "Test123"
         };*/
 
 
@@ -94,24 +94,26 @@ interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading,$docume
             userobj.password = user.password;
 
             $localstorage.setObject("user", userobj);
-
-            UserRequest.getUserProfile().then(function (data) {
-                $localstorage.setObject("user_profile", data.results);
-            });
-
+            
             Sessions.getAccessToken({
                 "client_id": escape(userobj.client_id),
                 "grant_type": "password",
                 "username": userobj.username,
                 "password": userobj.password
             }).then(function (data) {
+
                 $localstorage.setObject("AccessToken", data.data);
+
+                UserRequest.getUserProfile().then(function (data) {
+
+                    $localstorage.setObject("user_profile", data.results);
+
+                    setTimeout(function () {
+                        $state.go('cdashboard.dashboard');
+                    }, 100);
+                });
+
             });
-
-            setTimeout(function () {
-                $state.go('cdashboard.dashboard');
-            }, 100);
-
 
             $ionicLoading.hide();
 
@@ -131,7 +133,6 @@ interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading,$docume
 
 
     if ($localstorage.get('isLoggedIn') === 'true') {
-
         $state.go('cdashboard.dashboard');
     }
     $scope.clear = function () {
@@ -184,28 +185,43 @@ interactApp.controller('DashboardCtrl', function ($scope, Clients, Sessions, $ro
 
 
     userobj = $localstorage.getObject("user");
-    Sessions.getAccessToken({
-        "client_id": escape(userobj.client_id),
-        "grant_type": "password",
-        "username": userobj.username,
-        "password": userobj.password
-    }).then(function (data) {
-        console.log("at1", data.data);
-        $localstorage.setObject("AccessToken", data.data);
+    /*  Sessions.getAccessToken({
+          "client_id": escape(userobj.client_id),
+          "grant_type": "password",
+          "username": userobj.username,
+          "password": userobj.password
+      }).then(function (data) {
+          console.log("at1", data.data);
+          $localstorage.setObject("AccessToken", data.data);
 
-        Clients.boxes().then(function (info) {
-            $ionicLoading.hide();
-            $scope.boxes = info;
-        }, function () {
-            $scope.boxes = {
-                "in_progress": "?",
-                "completed": "?",
-                "not_started": "?"
-            };
+          Clients.boxes().then(function (info) {
+              $ionicLoading.hide();
+              $scope.boxes = info;
+          }, function () {
+              $scope.boxes = {
+                  "in_progress": "?",
+                  "completed": "?",
+                  "not_started": "?"
+              };
 
-            $scope.boxes = Sessions.getBoxes();
-            $ionicLoading.hide();
-        });
+              $scope.boxes = Sessions.getBoxes();
+              $ionicLoading.hide();
+          });
+      }, function () {
+          $scope.boxes = {
+              "in_progress": "?",
+              "completed": "?",
+              "not_started": "?"
+          };
+
+          $scope.boxes = Sessions.getBoxes();
+          $ionicLoading.hide();
+
+      });*/
+
+    Clients.boxes().then(function (info) {
+        $ionicLoading.hide();
+        $scope.boxes = info;
     }, function () {
         $scope.boxes = {
             "in_progress": "?",
@@ -213,12 +229,8 @@ interactApp.controller('DashboardCtrl', function ($scope, Clients, Sessions, $ro
             "not_started": "?"
         };
 
-        $scope.boxes = Sessions.getBoxes();
         $ionicLoading.hide();
-
     });
-
-
 
 
     var doSearch = ionic.debounce(function (query) {
