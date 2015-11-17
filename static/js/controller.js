@@ -1,4 +1,4 @@
-interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading, $localstorage, UserRequest, Sessions, $state) {
+interactApp.controller('SignInCtrl', function ($scope, $q, $ionicLoading,$document, $localstorage, UserRequest, Sessions, $state) {
 
     $document[0].addEventListener('online', function () {
 
